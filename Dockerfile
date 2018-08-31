@@ -1,6 +1,6 @@
-FROM alpine:3.1
+FROM anapsix/alpine-java:8u181b13_jdk-dcevm
 
-RUN apk add --update curl make zip python=2.7.12-r0 jq
+RUN apk add --update curl make zip python=2.7.15-r2 jq
 RUN apk add --update gcc g++
 RUN apk add --update bash && rm -rf /var/cache/apk/*
 RUN curl -O https://bootstrap.pypa.io/get-pip.py; python get-pip.py --user; echo "export PATH=\"\$PATH:/root/.local/bin\"" >> /etc/profile; source /etc/profile; pip install awscli --upgrade --user
