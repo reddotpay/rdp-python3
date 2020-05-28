@@ -1,33 +1,29 @@
-FROM alpine:3.11.6
+FROM ubuntu:20.10
 
 WORKDIR /app
 
 COPY [ "switchRole.sh", "getParamStore.sh", "./var/" ]
 
-ENV PYTHON_VERSION 3.8.2-r0
-
 ENV PATH /usr/local/bin:$PATH
 
-RUN apk add --update --no-cache \
-        autoconf \
-        automake \
+RUN apt-get update && apt-get install -y --no-install-recommends \
         bash \
         curl \
         g++ \
         gcc \
         jq \
-        libtool \
         make \
-        python3-dev \
-        python3=$PYTHON_VERSION \
+        python3.8 \
+        python3-pip \
         zip \
     && rm -rf /var/cache/apk/*
 
-RUN cd /usr/local/bin \
-    && rm -f /usr/bin/python \
-    && ln -s /usr/bin/python3 python
+RUN rm -f /usr/bin/python \
+    && cd /usr/local/bin \
+    && ln -s /usr/bin/python3 python \
+    && ln -s /usr/bin/pip3 pip
 
-RUN pip3 install --upgrade --no-cache-dir \
+RUN pip install --upgrade --no-cache-dir \
     pip \
     autopep8 \
     awscli \
