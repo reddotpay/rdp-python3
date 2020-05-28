@@ -39,6 +39,7 @@ function exportToFile() {
 	#restore delimiter
 	IFS=$old_IFS
 }
+
 for var in $ARGUMENTS
 do
 	PARAMSTORE=`aws ssm get-parameters-by-path --path "$var" --no-paginate --recursive | jq -r '.Parameters'`
