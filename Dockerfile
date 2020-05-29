@@ -1,39 +1,39 @@
-FROM alpine:3.8
+FROM ubuntu:20.10
 
-COPY ["switchRole.sh", "getParamStore.sh", "./var/"]
+WORKDIR /app
 
-WORKDIR /rdp-python3
+COPY [ "switchRole.sh", "getParamStore.sh", "./var/" ]
 
-ENV PYTHON_VERSION 3.6.6-r0
+ENV PATH /usr/local/bin:$PATH
 
-ENV PIP get-pip.py
-ADD https://bootstrap.pypa.io/get-pip.py /tmp/
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        bash \
+        curl \
+        g++ \
+        gcc \
+        jq \
+        make \
+        python3.8 \
+        python3-pip \
+        zip \
+    && rm -rf /var/cache/apk/*
 
-ENV ROOT_PATH=${PATH}:~/.local/bin
+RUN rm -f /usr/bin/python \
+    && cd /usr/local/bin \
+    && ln -s /usr/bin/python3 python \
+    && ln -s /usr/bin/pip3 pip
 
-RUN apk add --update --no-cache \
-  curl \
-  make \
-  zip \
-  python3=$PYTHON_VERSION \
-  python3-dev \
-  jq \
-  gcc \
-  g++ \
-  bash \
- && rm -rf /var/cache/apk/*
-
-RUN cd /tmp/ && python3 /tmp/${PIP}
-RUN pip install setuptools \
-  awscli \
-  autopep8 \
-  virtualenv \
-  pylint \
-  coverage \
-  sphinx \
-  sphinx-rtd-theme \
-  boto3 \
-  s3pypi \
-  pandas==0.23.4
-
-RUN rm -rf /tmp
+RUN pip install --upgrade --no-cache-dir \
+    pip \
+    autopep8 \
+    awscli \
+    boto3 \
+    coverage \
+    jq \
+    pandas \
+    pylint \
+    requests \
+    s3pypi \
+    setuptools \
+    sphinx \
+    sphinx-rtd-theme
