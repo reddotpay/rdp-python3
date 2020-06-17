@@ -1,6 +1,6 @@
 FROM alpine:3.8
 
-COPY ["switchRole.sh", "getParamStore.sh", "./var/"]
+COPY ["switchRole.sh", "getParamStore.sh", "/var/"]
 
 WORKDIR /rdp-python3
 
